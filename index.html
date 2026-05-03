@@ -23,9 +23,85 @@
   </header>
   <main>
     <script src="myScript.js"></script>
-    <section id="Result">
+    
+    <div id="Result"></div>
 
-    </section>
+    <template id="game-template">
+      <section class="game-card" data-id="">
+        <p class="time"></p>
+
+        <div class="team home">
+          <img class="logo-home">
+          <span class="name-home"></span>
+        </div>
+
+        <div class="score"></div>
+
+        <div class="team away">
+          <span class="name-away"></span>
+          <img class="logo-away">
+        </div>
+      </section>
+    </template>
+
+    
+  <h2>Bình luận</h2>
+
+  <div class="comment-box">
+    <div id="comments"></div>
+
+    <div class="chat-input">
+      <input id="username" placeholder="Tên của bạn">
+      <div class="chat-row">
+        <input id="content" placeholder="Nhập bình luận...">
+        <button onclick="sendComment()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function loadComments() {
+      fetch("http://localhost:3000/comments")
+        .then(res => res.json())
+        .then(data => {
+          const box = document.getElementById("comments");
+          box.innerHTML = "";
+
+          data.forEach(cmt => {
+            box.innerHTML += `
+              <div class="cmt">
+                <b>${cmt.username}</b>: ${cmt.content}
+              </div>
+            `;
+          });
+        });
+    }
+
+    function sendComment() {
+      const username = document.getElementById("username").value;
+      const content = document.getElementById("content").value;
+
+      fetch("http://localhost:3000/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: username,
+          content: content
+        })
+      }).then(() => {
+        document.getElementById("content").value = "";
+        loadComments();
+      });
+    }
+
+    // load khi mở web
+    loadComments();
+
+    // auto refresh mỗi 5s
+    setInterval(loadComments, 5000);
+  </script>
 
   </main>
   <footer>
