@@ -30,7 +30,7 @@ app.get("/comments", (req, res) => {
     (err, result) => {
       if (err) throw err;
       res.json(result);
-      console.log(result);
+      // console.log(result);
     }
   );
 });
@@ -46,6 +46,41 @@ app.post("/comments", (req, res) => {
   db.query(
     "INSERT INTO comments (username, content) VALUES (?, ?)",
     [username, content],
+    (err) => {
+      if (err) throw err;
+      res.json({ ok: true });
+    }
+  );
+});
+
+// Comment cho mỗi trận
+//////////////////////////////////////////////
+app.get("/game_comments", (req, res) => {
+  const { gameId } = req.query;
+
+  if (!gameId) {
+    return res.json({ error: "Thiếu gameId???" });
+  }
+
+  db.query(
+    "SELECT * FROM game_comments WHERE gameId = ? ORDER BY id ASC",
+    [gameId], 
+    (err, result) => {
+      if (err) throw err;
+      res.json(result);
+    }
+  );
+});
+app.post("/game_comments", (req, res) => {
+  const { gameId, username, content } = req.body;
+
+  if (!gameId || !username || !content) {
+    return res.json({ error: "Thiếu dữ liệu" });
+  }
+
+  db.query(
+    "INSERT INTO game_comments (gameId, username, content) VALUES (?, ?, ?)",
+    [gameId, username, content],
     (err) => {
       if (err) throw err;
       res.json({ ok: true });

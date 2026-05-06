@@ -26,6 +26,23 @@ header p {
   opacity: 0.7;
 }
 
+/* Nút cũ hơn */
+.load-older-btn {
+  display: block;
+  margin: 10px auto; /* căn giữa */
+  background: none;
+  border: none;
+  color: #2563eb; /* xanh nhẹ */
+  font-size: 20px;
+  text-decoration: underline; /* gạch dưới */
+  cursor: pointer;
+}
+
+.load-older-btn:hover {
+  color: #1d4ed8;
+}
+/* ____________________________ */
+
 /* */
 body {
   /* background: #0f172a; */
@@ -33,16 +50,48 @@ body {
   /* color: white; */
 }
 
+
+/* Game */
+.card {
+  /* background: #e9eaeb; */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin: 10px 0;
+}
+
+
 .game-card {
   display: flex;
   align-items: center;        /* căn giữa theo chiều dọc */
   justify-content: space-between; /* đẩy 2 bên ra rìa */
   
-  /* background: #e9eaeb; */
+  /* background: #e9eaeb;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   padding: 15px 20px;
   border-radius: 12px;
-  margin: 10px 0;
+  margin: 10px 0; */
+}
+
+.time-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 60px;
+}
+
+.time {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.date {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.2;
+  white-space: nowrap; /* 👈 QUAN TRỌNG: không xuống dòng */
 }
 
 /* mỗi bên team */
@@ -72,24 +121,11 @@ body {
   font-weight: bold;
 }
 
-.win-bar {
-  width: 100%;
-  height: 20px;              /* 👈 tăng chiều cao */
-  background: #ddd;
-  border-radius: 20px;
-  overflow: hidden;
+/* .game.comments {
+  display: block;
   margin-top: 10px;
-}
+} */
 
-.win-fill-home {
-  height: 100%;
-  background: #22c55e;       /* xanh */
-}
-
-.win-fill-away {
-  height: 100%;
-  background: #ef4444;       /* đỏ */
-}
 
 .win-text {
   display: flex;
@@ -112,15 +148,15 @@ body {
   background: #fff;
   border-radius: 15px;
   padding: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 /* ô tên */
 #username {
-  width: 100%;
+  width: 80%;
   padding: 8px 10px;
   border: none;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #2b1925;
   outline: none;
   font-size: 14px;
   margin-bottom: 8px;
@@ -172,4 +208,103 @@ body {
   padding: 10px 12px;
   margin-bottom: 10px;
   border-radius: 12px;
+}
+/* Game cards comment */
+/* ===== KHUNG COMMENT ===== */
+.Game-comment-box {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+
+  /* 🔥 co giãn thông minh */
+  min-height: 120px;
+  max-height: 300px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ===== DANH SÁCH COMMENT ===== */
+.Game-comments {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* scrollbar nhẹ */
+.Game-comments::-webkit-scrollbar {
+  width: 6px;
+}
+.Game-comments::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* ===== MỖI COMMENT ===== */
+.Game-cmt {
+  background: #f5f7fa;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  transition: 0.2s;
+}
+
+/* hover nhẹ */
+.Game-cmt:hover {
+  background: #e9ecef;
+}
+
+/* tên user */
+.Game-cmt b {
+  color: #1971c2;
+  margin-right: 5px;
+}
+
+/* ===== INPUT ===== */
+.Game-chat-input {
+  margin-top: 8px;
+}
+
+/* username */
+.username {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+/* hàng nhập */
+.chat-row {
+  display: flex;
+  gap: 6px;
+}
+
+/* input content */
+.content {
+  flex: 1;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* nút gửi */
+.send-btn {
+  background: #228be6;
+  border: none;
+  color: white;
+  padding: 0 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.send-btn:hover {
+  background: #1c7ed6;
+  transform: scale(1.05);
 }

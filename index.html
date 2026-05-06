@@ -23,25 +23,55 @@
   </header>
   <main>
     <script src="myScript.js"></script>
-    
+
+    <button class="load-older-btn" onclick="loadOlder()">Cũ hơn ⬆</button>
+
     <div id="Result"></div>
+    
+    <div class="time-box">
+      <div class="time"></div>
+      <div class="date"></div>
+    </div>
 
     <template id="game-template">
-      <section class="game-card" data-id="">
-        <p class="time"></p>
+      <section class="card">
+        <section class="game-card" data-id="">
+          <!-- <p class="time"></p> -->
+          <div class="time-box">
+            <div class="time"></div>
+            <div class="date"></div>
+          </div>
 
-        <div class="team home">
-          <img class="logo-home">
-          <span class="name-home"></span>
+          <div class="team home">
+            <img class="logo-home">
+            <span class="name-home"></span>
+          </div>
+
+          <div class="score"></div>
+
+          <div class="team away">
+            <span class="name-away"></span>
+            <img class="logo-away">
+          </div>
+          
+          <!-- <br> -->
+          
+        </section>
+        
+        <div class="Game-comment-box">
+          <div class="Game-comments"></div>
+
+          <div class="Game-chat-input">
+            <input class="username" placeholder="Tên của bạn">
+            <div class="chat-row">
+              <input class="content" placeholder="Nhập bình luận...">
+              <button class="send-btn">➤</button>
+            </div>
+          </div>
         </div>
 
-        <div class="score"></div>
-
-        <div class="team away">
-          <span class="name-away"></span>
-          <img class="logo-away">
-        </div>
       </section>
+      
     </template>
 
     
@@ -60,19 +90,23 @@
   </div>
 
   <script>
+    let lastId = 0;
+
     function loadComments() {
       fetch("http://localhost:3000/comments")
         .then(res => res.json())
         .then(data => {
           const box = document.getElementById("comments");
-          box.innerHTML = "";
 
-          data.forEach(cmt => {
-            box.innerHTML += `
-              <div class="cmt">
-                <b>${cmt.username}</b>: ${cmt.content}
-              </div>
-            `;
+          data.reverse().forEach(cmt => {
+            if (cmt.id > lastId) {
+              box.innerHTML += `
+                <div class="cmt">
+                  <b>${cmt.username}</b>: ${cmt.content}
+                </div>
+              `;
+              lastId = cmt.id;
+            }
           });
         });
     }
