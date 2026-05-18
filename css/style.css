@@ -135,81 +135,8 @@ body {
   font-weight: bold;
 }
 
-/* Comment .........*/
-.comment-box {
-  width: 100%;
-  max-width: 500px;
-  margin-left: 10px;
-  font-family: Arial, sans-serif;
-}
-
-/* khung chat */
-.chat-input {
-  background: #fff;
-  border-radius: 15px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-/* ô tên */
-#username {
-  width: 80%;
-  padding: 8px 10px;
-  border: none;
-  border-bottom: 1px solid #2b1925;
-  outline: none;
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-/* hàng nhập + nút */
-.chat-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ô nhập comment */
-#content {
-  flex: 1;
-  padding: 10px 12px;
-  border: none;
-  background: #f0f2f5;
-  border-radius: 20px;
-  outline: none;
-  font-size: 14px;
-}
-
-/* nút gửi */
-.chat-row button {
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  background: #1877f2;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.chat-row button:hover {
-  background: #0f5ec7;
-}
-
-/* hiệu ứng focus */
-#content:focus {
-  background: #e8f0fe;
-}
-
-/* comment đẹp hơn */
-.cmt {
-  background: #f1f1f1;
-  padding: 10px 12px;
-  margin-bottom: 10px;
-  border-radius: 12px;
-}
-/* Game cards comment */
+/* ______________________________________________ */
+/* Game cards comment /////////////////////////////////*/
 /* ===== KHUNG COMMENT ===== */
 .Game-comment-box {
   background: #ffffff;
@@ -271,35 +198,43 @@ body {
 
 /* username */
 .username {
-  width: 100%;
-  padding: 6px 8px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-bottom: 6px;
-  font-size: 13px;
+  width: 80%;
+  padding: 8px 10px;
+  border: none;
+  border-bottom: 1px solid #2b1925;
+  outline: none;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 /* hàng nhập */
 .chat-row {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
 }
 
 /* input content */
 .content {
-  flex: 1;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  /* flex: 1; */
+  width: 80%;
+  padding: 10px 12px;
+  border: none;
+  background: #f0f2f5;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
 }
 
 /* nút gửi */
 .send-btn {
-  background: #228be6;
+  width: 40px;
+  height: 40px;
   border: none;
+  border-radius: 50%;
+  background: #1877f2;
   color: white;
-  padding: 0 14px;
-  border-radius: 8px;
+  font-size: 18px;
   cursor: pointer;
   transition: 0.2s;
 }
@@ -307,4 +242,59 @@ body {
 .send-btn:hover {
   background: #1c7ed6;
   transform: scale(1.05);
+}
+
+/* Winning percent */
+
+.win-bar {
+    width: 500px;
+    height: 35px;
+
+    display: flex;
+
+    border-radius: 12px;
+    overflow: hidden;
+
+    background: #222;
+
+    margin: 20px auto 0;
+}
+
+.win_bar_home,
+.win_bar_visitor {
+    height: 100%;
+    transition: 0.3s;
+}
+
+.percent-bar {
+    width: 500px;
+
+    margin: 8px auto 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    color: black;
+}
+
+.homeText,
+.visitorText {
+    width: 120px;
+}
+
+.homeText {
+    text-align: left;
+}
+
+.visitorText {
+    text-align: right;
+}
+
+.decription {
+  color: gray;
+  text-align: right;
 }

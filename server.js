@@ -7,7 +7,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// console.log("PASS:", process.env.DB_PASS)
 // kết nối MySQL
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -24,7 +23,7 @@ db.connect(err => {
 
 // GET: lấy comment
 app.get("/comments", (req, res) => {
-  console.log("API called");
+  // console.log("API called");
   db.query(
     "SELECT * FROM comments ORDER BY id DESC",
     (err, result) => {
@@ -48,9 +47,24 @@ app.post("/comments", (req, res) => {
     [username, content],
     (err) => {
       if (err) throw err;
-      res.json({ ok: true });
+      // res.json({ ok: true });
+      res.send("Đã Insert cmt vào DB");
     }
   );
+});
+
+app.delete("/comments", (req, res) => {
+  const ID = req.body.id;
+  console.log(ID);
+  db.query(
+    "DELETE FROM comments WHERE id = ?", [ID],
+    (err) => {
+      if (err) throw err;
+      // res.json({ ok: true });
+      console.log("Đã Delete cmt với ID: ", ID);
+      res.send("Đã Delete cmt với ID: ", ID);
+    }
+  ); 
 });
 
 // Comment cho mỗi trận
@@ -88,7 +102,73 @@ app.post("/game_comments", (req, res) => {
   );
 });
 
+
+
+// Geuss the win percentsssdasd
+const Groq = require("groq-sdk");
+const groq = new Groq({ apiKey: process.env.GROQ_KEY});
+
+async function askAI(prompt) {
+  return groq.chat.completions.create({
+    messages: [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
+    model: "openai/gpt-oss-20b",
+  });
+}
+
+// Lấy tên đội
+app.post("/win_percent", async (req, res) => {
+  try {
+    const { home_team, visitor_team } = req.body;
+
+    console.log("Guess the win percent of ", home_team, " ", visitor_team);
+
+    const prompt = `
+    You are an NBA prediction API.
+
+    Predict the winning probability for this NBA game.
+
+    Home team: ${home_team}
+    Visitor team: ${visitor_team}
+
+    Rules:
+    - Return ONLY valid JSON
+    - No markdown
+    - No explanation
+    - Total must equal 100
+    - Use numbers only
+
+    Format:
+    {
+      "home_team": number,
+      "visitor_team": number
+    }
+    `;
+
+    const answer=await askAI(prompt);
+    const text = answer.choices[0].message.content;
+
+    console.log(text);
+    const result = JSON.parse(text);
+    res.json(result);
+
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      error: "Gemini API failed"
+    });
+  }
+});
+
+
 // chạy server
 app.listen(3000, () => {
   console.log("Server chạy tại http://localhost:3000");
 });
+
+

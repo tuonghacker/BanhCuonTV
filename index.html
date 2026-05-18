@@ -22,7 +22,7 @@
     </div>
   </header>
   <main>
-    <script src="myScript.js"></script>
+    <script src="js/myScript.js"></script>
 
     <button class="load-older-btn" onclick="loadOlder()">Cũ hơn ⬆</button>
 
@@ -53,11 +53,21 @@
             <span class="name-away"></span>
             <img class="logo-away">
           </div>
-          
-          <!-- <br> -->
-          
         </section>
-        
+
+        <!-- // Win bar -->
+        <div class="win-bar">
+          <div class="win_bar_home"></div>
+          <div class="win_bar_visitor"></div>
+        </div>
+        <div class="percent-bar">
+          <div class="homeText"></div>
+          <div class="visitorText"></div>
+        </div>
+        <div class="decription"> Win percentage provided by GPT-AI</div>
+
+
+        <!-- // Game cmt -->
         <div class="Game-comment-box">
           <div class="Game-comments"></div>
 
@@ -70,6 +80,8 @@
           </div>
         </div>
 
+        
+                
       </section>
       
     </template>
@@ -89,53 +101,28 @@
     </div>
   </div>
 
-  <script>
-    let lastId = 0;
+  <template id="cmt_template">
+      <div class="cmt">
+        <b class="cmt_username"></b>:
+        <span class="cmt_content"></span>
 
-    function loadComments() {
-      fetch("http://localhost:3000/comments")
-        .then(res => res.json())
-        .then(data => {
-          const box = document.getElementById("comments");
+        <div class="menu">
+          <button
+            class="menu_btn"
+            onclick="this.closest('.menu').classList.toggle('show')"
+          >
+            ⋮
+          </button>
+          
+          <div class="menu_content">
+            <button class="delete_btn">Delete</button>
+          </div>
+        </div>
+      </div>
+  </template>
 
-          data.reverse().forEach(cmt => {
-            if (cmt.id > lastId) {
-              box.innerHTML += `
-                <div class="cmt">
-                  <b>${cmt.username}</b>: ${cmt.content}
-                </div>
-              `;
-              lastId = cmt.id;
-            }
-          });
-        });
-    }
-
-    function sendComment() {
-      const username = document.getElementById("username").value;
-      const content = document.getElementById("content").value;
-
-      fetch("http://localhost:3000/comments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username: username,
-          content: content
-        })
-      }).then(() => {
-        document.getElementById("content").value = "";
-        loadComments();
-      });
-    }
-
-    // load khi mở web
-    loadComments();
-
-    // auto refresh mỗi 5s
-    setInterval(loadComments, 5000);
-  </script>
+  <link rel="stylesheet" href="css/general_cmt_style.css" type="text/css">
+  <script src="js/general_comment.js"></script>
 
   </main>
   <footer>

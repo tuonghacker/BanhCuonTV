@@ -1,7 +1,7 @@
 const gameMap = new Map(); // id → element
 
 // Cập nhật ảnh, tỉ số
-function updateGameElement(el, game) {
+async function updateGameElement(el, game) {
   const date = new Date(game.datetime);
   // // ⏰ giờ phút (dòng trên)
   const time = date.toLocaleTimeString("vi-VN", {
@@ -37,6 +37,7 @@ function updateGameElement(el, game) {
     : `${game.home_team_score} - ${game.visitor_team_score}`;
 
   el.querySelector(".score").textContent = score;
+
 }
 
 function Card_loadComments(gameId, card) {
@@ -47,7 +48,7 @@ function Card_loadComments(gameId, card) {
   fetch(`http://localhost:3000/game_comments?gameId=${gameId}`)
     .then(res => res.json())
     .then(data => {
-      data.reverse().forEach(cmt => {
+      data.forEach(cmt => {
         if (cmt.id > card.last_cmt) {
           box.innerHTML += `
             <div class="Game-cmt">
@@ -55,6 +56,7 @@ function Card_loadComments(gameId, card) {
             </div>
           `;
           card.last_cmt = cmt.id;
+          box.scrollTop = box.scrollHeight;
         }
       });
     });
@@ -97,6 +99,65 @@ function Card_sendComment(gameId, card) {
   });
 }
 
+async function Guess_the_win_percent(game, card){
+  // Send teams name to server
+  try {
+    const win_percent=await fetch("http://localhost:3000/win_percent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        home_team: game.home_team.full_name,
+        visitor_team: game.visitor_team.full_name
+      })
+    });
+    const data = await win_percent.json();
+
+    console.log(data);
+    console.log(data.home_team);
+    console.log(data.visitor_team);
+
+    // Front end
+    const homeBar = await card.querySelector(".win_bar_home");
+    const visitorBar = await card.querySelector(".win_bar_visitor");
+
+    homeBar.style.width = `${data.home_team}%`;
+    visitorBar.style.width = `${data.visitor_team}%`;
+
+    // đội nhiều % hơn => xanh
+    if (data.home_team > data.visitor_team) {
+
+        homeBar.style.background = "#22c55e";
+        visitorBar.style.background = "#ef4444";
+
+    } else if (data.visitor_team > data.home_team) {
+
+        visitorBar.style.background = "#22c55e";
+        homeBar.style.background = "#ef4444";
+
+    } else {
+
+        homeBar.style.background = "#888";
+        visitorBar.style.background = "#888";
+    }
+
+    // console.log(document.getElementById("homeText"));
+    card.querySelector(".homeText").textContent =
+        `${game.home_team.full_name}: ${data.home_team}%`;
+
+    card.querySelector(".visitorText").textContent =
+        `${game.visitor_team.full_name}: ${data.visitor_team}%`;
+
+    // const get_from_server = await fetch("http://localhost:3000/win_percent");
+    // const data = await get_from_server.json();
+    // console.log(data);
+
+  } catch (err) {
+    console.error("Error: ", err);
+  }
+}
+
 /////////// Chèn lần đầu
 function initialRender(data) {
   // console.log(123);
@@ -109,13 +170,11 @@ function initialRender(data) {
     return new Date(b.datetime) - new Date(a.datetime);
   });
 
-  
-
   data.data.forEach(game => {
     const clone = template.content.cloneNode(true);
     const el = clone.querySelector(".card");
 
-    console.log(game.datetime);
+    // console.log(game.datetime);
     el.dataset.id = game.id;
     // 
     // 
@@ -126,21 +185,22 @@ function initialRender(data) {
       // 🔥 load comment cho trận này
       startAutoLoadComments(game.id, el);
 
-      
-
       // // 🔥 gắn nút gửi
       const btn = el.querySelector(".send-btn");
       btn.addEventListener("click", () => {
         console.log("Send cmt at ", game.id);
         Card_sendComment(game.id, el);
+        Card_loadComments(game.id, el);
       });
-      console.log("Finish ", game.id);
+      // console.log("Finish ", game.id);
     //////////
+    
+    Guess_the_win_percent(game, el);
 
     container.prepend(clone);
     gameMap.set(game.id, el); // 🔥 lưu lại
   });
-}
+} 
 
 function updateGames(data) {
   data.data.forEach(game => {
@@ -151,7 +211,6 @@ function updateGames(data) {
     }
   });
 }
-
 
 function loadGames(first = false, t) {
   return fetch(`https://api.balldontlie.io/v1/games?dates[]=${t}`, {
@@ -185,29 +244,9 @@ function formatDate(date) {
         String(date.getMonth() + 1).padStart(2, "0") + "-" +
         String(date.getDate()).padStart(2, "0");
 } 
-
-// Date
-
-
-
-
-//   for (let i = days_ago; i <= 1; i++){
-//     current_day.setDate(today.getDate() + i);
-//     loadGames(true, formatDate(current_day));
-//     console.log("Date: ", i,": ", formatDate(current_day));
-//   }
-// async function run() {
-//   for (let i = -1; i <= days_ago; i++){
-//     let d = new Date(today);
-//     d.setDate(today.getDate() - i);
-
-//     await loadGames(true, formatDate(d)); // 👈 chờ
-//   }
-// }
-// run();
-
 async function loadOlder() {
   // ⬅️ lùi 1 ngày
+  // console.days_ago
   days_ago++;
   let old_date = new Date(today);
   old_date.setDate(today.getDate()-days_ago);
@@ -238,9 +277,9 @@ console.log("Yesterday:", y);
 console.log("Today:", t);
 console.log("Tomorrow:", tm);
 
-// mỗi 10s
-setInterval(() => {
-  if (!document.hidden) {
-    loadGames(false, t);
-  }
-}, 10000);
+// // mỗi 10s
+// setInterval(() => {
+//   if (!document.hidden) {
+//     loadGames(false);
+//   }
+// }, 10000);

@@ -1,0 +1,139 @@
+/* ______________________________________________ */
+/* Comment chung .........*/
+.comment-box {
+  width: 100%;
+  max-width: 500px;
+  margin-left: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/* khung chat */
+.chat-input {
+  background: #fff;
+  border-radius: 15px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ô tên */
+#username {
+  width: 80%;
+  padding: 8px 10px;
+  border: none;
+  border-bottom: 1px solid #2b1925;
+  outline: none;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* hàng nhập + nút */
+.chat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ô nhập comment */
+#content {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  background: #f0f2f5;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+/* nút gửi */
+.chat-row button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: #1877f2;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-row button:hover {
+  background: #0f5ec7;
+}
+
+/* hiệu ứng focus */
+#content:focus {
+  background: #e8f0fe;
+}
+
+/* comment đẹp hơn */
+.cmt {
+  background: #f1f1f1;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+}
+
+.cmt {
+  position: relative;
+}
+
+/* option trong cmt */
+.menu {
+  display: inline-block;
+  position: relative;
+}
+.menu_btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+.menu_content {
+  display: none;
+
+  position: absolute;
+
+  top: 100%;
+  left: 100%;
+
+  z-index: 999;
+
+  background: white;
+  border: 1px solid #ccc;
+
+  padding: 5px;
+}
+.menu_content button {
+  border: none;
+  background: none;
+  color: red;
+  cursor: pointer;
+}
+
+.menu.show .menu_content {
+  display: block;
+}
+
+/* vùng chứa comment có thanh trượt */
+#comments {
+  max-height: 300px;
+  overflow-y: auto;
+
+  margin-bottom: 10px;
+  padding-right: 5px;
+}
+
+/* scrollbar */
+#comments::-webkit-scrollbar {
+  width: 6px;
+}
+
+#comments::-webkit-scrollbar-thumb {
+  background: #bdbdbd;
+  border-radius: 10px;
+}
+
+#comments::-webkit-scrollbar-track {
+  background: transparent;
+}
